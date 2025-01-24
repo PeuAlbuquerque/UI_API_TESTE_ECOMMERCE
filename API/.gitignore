@@ -1,0 +1,11 @@
+#Folders
+node.modules/
+cypress/screenshots/
+allure-report/
+allure-results/
+cypress/downloads/
+cypress.env.json
+
+#Archives
+package.lock.json
+cypress.env.jsons
