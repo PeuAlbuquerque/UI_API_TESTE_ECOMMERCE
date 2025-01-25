@@ -1,12 +1,13 @@
 #Folders
-node.modules/
+node_modules/
+**/node_modules/
 cypress/screenshots/
 allure-report/
 allure-results/
 cypress/downloads/
-cypress.env.json
+
 
 #Archives
-package.lock.json
+package-lock.json
 cypress.env.json
 425518a066b38d8489116505a378abd28f7bd6b8 UI/node_modules/public-encrypt/test/test_rsa_privkey.pem

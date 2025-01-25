@@ -26,32 +26,34 @@ Cypress.Commands.add("listarProdutosPorCategoria", (idCategoria) => {
   });
 });
 
-Cypress.Commands.add(
-  "alterarImagem",
-  (idUsuario, source, cor, productId, token) => {
-    // Carregar o arquivo da pasta fixtures
-    cy.fixture("img_laptop.jpg", "binary").then((fileContent) => {
-      // Criar um blob a partir do conteúdo do arquivo
-      const blob = Cypress.Blob.binaryStringToBlob(fileContent, "image/jpg");
+Cypress.Commands.add("alterarImagem", (idUsuario, source, cor, token) => {
+  const queryParams = { product_id: 3 };
 
-      // Criar o FormData e anexar o arquivo
-      const formData = new FormData();
-      formData.append("file", blob, "img_laptop.jpg");
+  const fileName = "img_laptop.jpg";
+  cy.fixture(fileName, "base64").then((fileContent) => {
+    const formData = new FormData();
+    formData.append(
+      "file",
+      Cypress.Blob.base64StringToBlob(fileContent, "image/jpeg"),
+      fileName
+    );
+    formData.append("color", "BLUE");
+    formData.append("source", "3683D1");
+    formData.append("userId", "886994944");
 
-      // Fazer a requisição
-      cy.request({
-        method: "POST",
-        url: `catalog/api/v1/product/image/${idUsuario}/${source}/${cor}?product_id=${productId}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      }).then((response) => {
-        cy.log("Teste 01", response);
-      });
+    cy.request({
+      method: "POST",
+      url: `catalog/api/v1/product/image/${idUsuario}/${source}/${cor}?`,
+      qs: queryParams,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    }).then((response) => {
+      expect(response.status).to.equal(200);
     });
-  }
-);
+  });
+});
 
 Cypress.Commands.add("token", (email, senha, usuario) => {
   return cy
@@ -65,6 +67,6 @@ Cypress.Commands.add("token", (email, senha, usuario) => {
       },
     })
     .then((response) => {
-      return response.body.statusMessage.token; // Retorna o token
+      return response.body.statusMessage.token;
     });
 });
